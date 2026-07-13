@@ -22,6 +22,39 @@ You can install it globally via the Go toolchain:
 go install github.com/l3acler/holo@latest
 ```
 
+> **Note:** If you get a "command not found" error, your Go bin directory isn't in your PATH.
+<details>
+<summary><b>Show me how to fix this</b></summary>
+
+**Mac/Linux (Zsh/Bash):**
+Run this in your terminal to add it to your current session:
+```bash
+export PATH=$PATH:$(go env GOPATH)/bin
+```
+
+To make it permanent, run the command for your specific shell:
+
+**For Zsh (Default on macOS):**
+```bash
+echo 'export PATH=$PATH:$(go env GOPATH)/bin' >> ~/.zshrc
+source ~/.zshrc
+```
+
+**For Bash:**
+```bash
+echo 'export PATH=$PATH:$(go env GOPATH)/bin' >> ~/.bashrc
+source ~/.bashrc
+```
+
+**Windows (PowerShell):**
+Run this in PowerShell to add it to your current session:
+```powershell
+$env:Path += ";$env:USERPROFILE\go\bin"
+```
+
+(To make it permanent, search "Environment Variables" in your Windows Start Menu and add %USERPROFILE%\go\bin to your Path variable.)
+</details>
+
 **For Frontend Developers:**
 Download the pre-compiled binary for your OS (macOS, Windows, Linux) from the [Releases](https://github.com/l3acler/holo/releases) tab, place it in your project directory, and run it as `./holo`.
 
