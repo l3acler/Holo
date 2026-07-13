@@ -1,5 +1,9 @@
 # Holo
 
+[![golangci-lint](https://github.com/l3acler/holo/actions/workflows/golangci-lint.yml/badge.svg)](https://github.com/l3acler/holo/actions/workflows/golangci-lint.yml)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/l3acler/holo)](https://github.com/l3acler/holo/releases)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 > **Project a fully working REST API from a single JSON file in seconds.**
 
 Holo is a zero-config, single-binary mock server CLI tool written in Go. It acts as a zero-dependency successor to tools like `json-server`, allowing frontend developers and automated UI tests to easily interact with a dynamic, thread-safe mock REST API without running any heavy databases or backend frameworks.
