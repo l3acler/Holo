@@ -14,8 +14,12 @@ func setupTestServer(t *testing.T) (*Store, *http.ServeMux, func()) {
 	if err != nil {
 		t.Fatalf("failed to create temp file: %v", err)
 	}
-	tmpFile.Write([]byte(`{"users": [{"id": "1", "name": "Bader"}]}`))
-	tmpFile.Close()
+	if _, err := tmpFile.Write([]byte(`{"users": [{"id": "1", "name": "Bader"}]}`)); err != nil {
+		t.Fatalf("failed to write to temp file: %v", err)
+	}
+	if err := tmpFile.Close(); err != nil {
+		t.Fatalf("failed to close temp file: %v", err)
+	}
 
 	store, err := NewStore(tmpFile.Name(), false)
 	if err != nil {
@@ -27,7 +31,9 @@ func setupTestServer(t *testing.T) (*Store, *http.ServeMux, func()) {
 	mux.HandleFunc("/{resource}/{id}", handleItem(store))
 
 	cleanup := func() {
-		os.Remove(tmpFile.Name())
+		if err := os.Remove(tmpFile.Name()); err != nil {
+			t.Logf("failed to remove temp file: %v", err)
+		}
 	}
 
 	return store, mux, cleanup
@@ -71,7 +77,9 @@ func TestCollectionPost(t *testing.T) {
 	}
 
 	var res map[string]any
-	json.Unmarshal(rr.Body.Bytes(), &res)
+	if err := json.Unmarshal(rr.Body.Bytes(), &res); err != nil {
+		t.Fatalf("failed to parse response: %v", err)
+	}
 	if res["name"] != "Alice" {
 		t.Errorf("handler returned unexpected name: got %v", res["name"])
 	}
@@ -94,7 +102,9 @@ func TestItemGet(t *testing.T) {
 	}
 
 	var res map[string]any
-	json.Unmarshal(rr.Body.Bytes(), &res)
+	if err := json.Unmarshal(rr.Body.Bytes(), &res); err != nil {
+		t.Fatalf("failed to parse response: %v", err)
+	}
 	if res["name"] != "Bader" {
 		t.Errorf("handler returned unexpected body: got %v", rr.Body.String())
 	}
@@ -116,8 +126,9 @@ func TestItemPut(t *testing.T) {
 	}
 
 	var res map[string]any
-	json.Unmarshal(rr.Body.Bytes(), &res)
-
+	if err := json.Unmarshal(rr.Body.Bytes(), &res); err != nil {
+		t.Fatalf("failed to parse response: %v", err)
+	}
 	// 'name' should be gone, 'role' should be there, 'id' preserved
 	if res["name"] != nil {
 		t.Errorf("PUT should have replaced the object, but name is still present: %v", res)
@@ -143,8 +154,9 @@ func TestItemPatch(t *testing.T) {
 	}
 
 	var res map[string]any
-	json.Unmarshal(rr.Body.Bytes(), &res)
-
+	if err := json.Unmarshal(rr.Body.Bytes(), &res); err != nil {
+		t.Fatalf("failed to parse response: %v", err)
+	}
 	// 'name' should still be there, 'role' should be added
 	if res["name"] != "Bader" || res["role"] != "admin" {
 		t.Errorf("handler returned unexpected body: got %v", rr.Body.String())
