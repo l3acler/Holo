@@ -1,0 +1,24 @@
+# Compiled Binaries
+holo
+holo.exe
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Database Files
+db.json
+*.tmp
+*.json.tmp
+db_test_*.json
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# IDEs
+.idea/
+.vscode/
